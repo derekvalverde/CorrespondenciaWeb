@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
+
+<div class="text-center m-4">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+
+    @if (Int32.Parse(HttpContextAccessor.HttpContext.Session.GetString("SessionCorresRegistrada")) > 0)
+    {
+
+        <img src="~/Imagenes/Check-02.png" style="width:30px; height:30px;" /><br />
+        <div><h6 class="mt-3">Registro adicionado exitosamente</h6></div>
+
+        HttpContextAccessor.HttpContext.Session.SetString("SessionCorresRegistrada", "0");
+
+    }
+    else
+    {
+        <img src="~/Imagenes/Wrong.png" style="width:30px; height:30px;" /><br /> <h6 class="mt-3"> Su pedido NO fue adicionado</h6>
+
+        HttpContextAccessor.HttpContext.Session.SetString("SessionCorresRegistrada", "0");
+    }
+
+    <!--
+        <div class="text-center">
+            <button type="button" class="btn btn-primary2 center-block mt-3 mb-auto" data-dismiss="modal" aria-label="Close">
+                Aceptar
+            </button>
+            <!--
+               <a asp-controller="Home" asp-action="Carrito" class="btn btn-primary2 center-block mt-3 mb-auto">Aceptar</a>
+
+    </div>  -->
+
+</div>

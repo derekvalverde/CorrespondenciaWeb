@@ -1,0 +1,106 @@
+2022-01-26T18:45:26.9618792-04:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2022-01-26T18:45:26.9715974-04:00  [INF] Hosting environment: "Development" (c3307c92)
+2022-01-26T18:45:26.9733268-04:00  [INF] Content root path: "C:\ProyectosProduccion\INTI_PP" (b5d60022)
+2022-01-26T18:46:02.6539383-04:00 80000047-0000-e800-b63f-84710c7967bb [ERR] Error al cargar Pedidos POST(consumiendo APIS) System.Net.WebException: Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder. Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder.
+ ---> System.Net.Http.HttpRequestException: Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder.
+ ---> System.Net.Sockets.SocketException (10060): Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder.
+   at System.Net.Http.ConnectHelper.ConnectAsync(String host, Int32 port, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.ConnectHelper.ConnectAsync(String host, Int32 port, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean allowHttp2, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.GetHttpConnectionAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithRetryAsync(HttpRequestMessage request, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.FinishSendAsyncUnbuffered(Task`1 sendTask, HttpRequestMessage request, CancellationTokenSource cts, Boolean disposeCts)
+   at System.Net.HttpWebRequest.SendRequest()
+   at System.Net.HttpWebRequest.GetResponse()
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetResponse()
+   at System.Net.WebClient.GetWebResponse(WebRequest request)
+   at System.Net.WebClient.DownloadBits(WebRequest request, Stream writeStream)
+   at System.Net.WebClient.UploadBits(WebRequest request, Stream readStream, Byte[] buffer, Int32 chunkSize, Byte[] header, Byte[] footer)
+   at System.Net.WebClient.UploadDataInternal(Uri address, String method, Byte[] data, WebRequest& request)
+   at System.Net.WebClient.UploadString(Uri address, String method, String data)
+   at INTI_PP.Services.ConsumirRepositorio.obtenerLogin(clsLoginRequest login) in C:\ProyectosProduccion\INTI_PP\Services\ConsumirRepositorio.cs:line 42
+   at INTI_PP.Controllers.HomeController.Pedidos(clsLoginRequest model, String txtCaptcha) in C:\ProyectosProduccion\INTI_PP\Controllers\HomeController.cs:line 731 (5e816291)
+2022-01-26T18:50:27.2826060-04:00 800000e1-0002-ff00-b63f-84710c7967bb [ERR] Error en Get CarritoSystem.Net.WebException: The remote server returned an error: (404) Not Found.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.WebClient.GetWebResponse(WebRequest request, IAsyncResult result)
+   at System.Net.WebClient.GetWebResponseTaskAsync(WebRequest request)
+   at System.Net.WebClient.DownloadBitsAsync(WebRequest request, Stream writeStream, AsyncOperation asyncOp, Action`3 completionDelegate)
+   at INTI_PP.Services.ConsumirRepositorio.obtenerListaActivosAsync(String usuID, String cadToken) in C:\ProyectosProduccion\INTI_PP\Services\ConsumirRepositorio.cs:line 1012
+   at INTI_PP.Controllers.HomeController.Activo(String codigoBusquedaActivo, String detalleBusquedaActivo) in C:\ProyectosProduccion\INTI_PP\Controllers\HomeController.cs:line 1932 (92495d5f)
+2022-01-26T19:46:52.7920589-04:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2022-01-26T19:46:52.8066180-04:00  [INF] Hosting environment: "Development" (c3307c92)
+2022-01-26T19:46:52.8096191-04:00  [INF] Content root path: "C:\ProyectosProduccion\INTI_PP" (b5d60022)
+2022-01-26T19:47:12.3881922-04:00 80000051-0000-e800-b63f-84710c7967bb [ERR] The view '"Activo"' was not found. Searched locations: ["/Views/Home/Activo.cshtml", "/Views/Shared/Activo.cshtml"] (9bb2756c)
+2022-01-26T19:47:12.4379430-04:00 80000051-0000-e800-b63f-84710c7967bb [ERR] An unhandled exception has occurred while executing the request. (48a46595)
+System.InvalidOperationException: The view 'Activo' was not found. The following locations were searched:
+/Views/Home/Activo.cshtml
+/Views/Shared/Activo.cshtml
+   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|29_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|24_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|19_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2022-01-26T19:48:30.3029436-04:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2022-01-26T19:48:30.3170388-04:00  [INF] Hosting environment: "Development" (c3307c92)
+2022-01-26T19:48:30.3237706-04:00  [INF] Content root path: "C:\ProyectosProduccion\INTI_PP" (b5d60022)
+2022-01-26T19:49:11.9536496-04:00 8000008b-0001-f800-b63f-84710c7967bb [ERR] Error en Get CarritoSystem.Net.WebException: The remote server returned an error: (404) Not Found.
+   at System.Net.HttpWebRequest.GetResponse()
+   at System.Net.WebClient.GetWebResponse(WebRequest request)
+   at System.Net.WebClient.DownloadBits(WebRequest request, Stream writeStream)
+   at System.Net.WebClient.UploadBits(WebRequest request, Stream readStream, Byte[] buffer, Int32 chunkSize, Byte[] header, Byte[] footer)
+   at System.Net.WebClient.UploadDataInternal(Uri address, String method, Byte[] data, WebRequest& request)
+   at System.Net.WebClient.UploadString(Uri address, String method, String data)
+   at INTI_PP.Services.ConsumirRepositorio.obtenerActivoBuscador(String codigoBusquedaActivo, String detalleBusquedaActivo, String CadToken) in C:\ProyectosProduccion\INTI_PP\Services\ConsumirRepositorio.cs:line 991
+   at INTI_PP.Controllers.HomeController.Activo(String codigoBusquedaActivo, String detalleBusquedaActivo) in C:\ProyectosProduccion\INTI_PP\Controllers\HomeController.cs:line 1946 (55b4c3f0)
+2022-01-26T20:05:57.3019203-04:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2022-01-26T20:05:57.3135446-04:00  [INF] Hosting environment: "Development" (c3307c92)
+2022-01-26T20:05:57.3156052-04:00  [INF] Content root path: "C:\ProyectosProduccion\INTI_PP" (b5d60022)
+2022-01-26T20:07:42.6279349-04:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2022-01-26T20:07:42.6452060-04:00  [INF] Hosting environment: "Development" (c3307c92)
+2022-01-26T20:07:42.6477152-04:00  [INF] Content root path: "C:\ProyectosProduccion\INTI_PP" (b5d60022)
+2022-01-26T20:08:20.5141943-04:00 80000120-0000-f100-b63f-84710c7967bb [ERR] Error al obtener cantidad comprada System.Net.WebException: The remote server returned an error: (404) Not Found.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.WebClient.GetWebResponse(WebRequest request, IAsyncResult result)
+   at System.Net.WebClient.GetWebResponseTaskAsync(WebRequest request)
+   at System.Net.WebClient.DownloadBitsAsync(WebRequest request, Stream writeStream, AsyncOperation asyncOp, Action`3 completionDelegate)
+   at INTI_PP.Services.ConsumirRepositorio.obtenerActivoUbicacionHistoricoListar(String actCodigo, String cadToken) in C:\ProyectosProduccion\INTI_PP\Services\ConsumirRepositorio.cs:line 1040
+   at INTI_PP.Controllers.HomeController.ObtenerActivoUbicacionHistoricoListar(String idActivo) in C:\ProyectosProduccion\INTI_PP\Controllers\HomeController.cs:line 1983 (0ca4ee83)
+2022-01-26T20:08:26.4645092-04:00 80000122-0000-f100-b63f-84710c7967bb [ERR] Error al obtener cantidad comprada System.Net.WebException: The remote server returned an error: (404) Not Found.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.WebClient.GetWebResponse(WebRequest request, IAsyncResult result)
+   at System.Net.WebClient.GetWebResponseTaskAsync(WebRequest request)
+   at System.Net.WebClient.DownloadBitsAsync(WebRequest request, Stream writeStream, AsyncOperation asyncOp, Action`3 completionDelegate)
+   at INTI_PP.Services.ConsumirRepositorio.obtenerActivoUbicacionHistoricoListar(String actCodigo, String cadToken) in C:\ProyectosProduccion\INTI_PP\Services\ConsumirRepositorio.cs:line 1040
+   at INTI_PP.Controllers.HomeController.ObtenerActivoUbicacionHistoricoListar(String idActivo) in C:\ProyectosProduccion\INTI_PP\Controllers\HomeController.cs:line 1983 (0ca4ee83)
+2022-01-26T20:08:29.2597934-04:00 80000124-0000-f100-b63f-84710c7967bb [ERR] Error al obtener cantidad comprada System.Net.WebException: The remote server returned an error: (404) Not Found.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.WebClient.GetWebResponse(WebRequest request, IAsyncResult result)
+   at System.Net.WebClient.GetWebResponseTaskAsync(WebRequest request)
+   at System.Net.WebClient.DownloadBitsAsync(WebRequest request, Stream writeStream, AsyncOperation asyncOp, Action`3 completionDelegate)
+   at INTI_PP.Services.ConsumirRepositorio.obtenerActivoUbicacionHistoricoListar(String actCodigo, String cadToken) in C:\ProyectosProduccion\INTI_PP\Services\ConsumirRepositorio.cs:line 1040
+   at INTI_PP.Controllers.HomeController.ObtenerActivoUbicacionHistoricoListar(String idActivo) in C:\ProyectosProduccion\INTI_PP\Controllers\HomeController.cs:line 1983 (0ca4ee83)
+2022-01-26T20:08:32.2872263-04:00 800000ae-0001-e800-b63f-84710c7967bb [ERR] Error al obtener cantidad comprada System.Net.WebException: The remote server returned an error: (404) Not Found.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Net.WebClient.GetWebResponse(WebRequest request, IAsyncResult result)
+   at System.Net.WebClient.GetWebResponseTaskAsync(WebRequest request)
+   at System.Net.WebClient.DownloadBitsAsync(WebRequest request, Stream writeStream, AsyncOperation asyncOp, Action`3 completionDelegate)
+   at INTI_PP.Services.ConsumirRepositorio.obtenerActivoUbicacionHistoricoListar(String actCodigo, String cadToken) in C:\ProyectosProduccion\INTI_PP\Services\ConsumirRepositorio.cs:line 1040
+   at INTI_PP.Controllers.HomeController.ObtenerActivoUbicacionHistoricoListar(String idActivo) in C:\ProyectosProduccion\INTI_PP\Controllers\HomeController.cs:line 1983 (0ca4ee83)

@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="m-1">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <div class="my-3 text-center">
+        <img src="~/Imagenes/AddShoping.png" style="width: 50px; height:50px;" />
+    </div>
+
+
+    <div class="custom-control custom-checkbox my-3 mx-2">
+        <h6>Los pedidos estan sujeto a existencia.<br /></h6>
+        <input type="checkbox" id="AceptaPolitica" name="AceptaPolitica" />&nbsp;&nbsp;Acepto.
+
+    </div>
+
+
+    <form asp-controller="Home" asp-action="confirmarCompra" method="post" class="text-center" onsubmit="document.getElementById('BtnConfirmar').disabled=true;">
+        
+        <button class="btn btn-primary text-center mt-2" type="submit" id="BtnConfirmar" name="BtnConfirmar" disabled><strong class="text-center">CONFIRMAR</strong></button>
+       
+    </form>
+
+</div>
+
+
+

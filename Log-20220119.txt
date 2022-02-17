@@ -1,0 +1,6 @@
+2022-01-19T16:54:03.8500035-04:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2022-01-19T16:54:03.8686357-04:00  [INF] Hosting environment: "Development" (c3307c92)
+2022-01-19T16:54:03.8789003-04:00  [INF] Content root path: "C:\ProyectosProduccion\INTI_PP" (b5d60022)
+2022-01-19T16:58:23.5015232-04:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2022-01-19T16:58:23.5144934-04:00  [INF] Hosting environment: "Development" (c3307c92)
+2022-01-19T16:58:23.5173165-04:00  [INF] Content root path: "C:\ProyectosProduccion\INTI_PP" (b5d60022)

@@ -1,0 +1,2159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+<body>
+    <header>
+    </header>
+    <div class="contenedor_carga" id="contenedor_carga">
+        <div class="carga" id="carga">
+        </div>
+        <!--<img src="~/css/imagenes/cargando.gif" />-->
+    </div>
+    <div class="containerr-fluid">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <div class="container">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+
+
+    <script type="text/javascript">
+
+        //Para añadir al carro
+        $(document).ready(function (e) {
+            $('#modalAdicionar').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).data().id;
+
+                var datos = id.split("::");
+                var codprd = datos[0]; //Codigo de producto
+
+                var precio = datos[1]; //Precio del producto
+                var origen = datos[2]; //Origen
+                var sector = datos[3]; //Sector
+                var mavlin = datos[4]; //Mav Linea
+                var mavfam = datos[5]; //Mav Familia
+                var mavori = datos[6]; //Mav Origen
+                var nompro = datos[7]; //Nombre del producto
+                var tieneigm = datos[8]; //tiene imagen true false
+                var tieneStock = datos[9]; //tiene productos en existencia
+                var descuento = datos[10]; //Descuento
+                var pocentajeDescuento = datos[11]; //porcentaje de descuento
+                var cantidadMaxima = datos[12]; //Cantidad maxima que se puede comprar
+                /**/
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("ObtenerCantidadComprada")",
+                    data: { matCodigo: codprd},
+                    dataType: "text",
+                    success: function (msg) {
+                        $(e.currentTarget).find('#cantidadCompradaH').val(msg);
+                        //alert(msg);
+                    },
+                    error: function (req, status, error) {
+                        alert(error);
+                    }
+                });
+            /**/
+
+
+
+
+
+                var existencia = datos[14]; //existencia del producto
+
+                if (tieneigm == "True") {
+                    var srcimg = '../../ImagenClient/' + codprd + '.png';
+                    $(e.currentTarget).find('#matImagenH').val('AC');
+                }
+                else {
+                    var srcimg = '../../ImagenClient/BLANCO.png';
+                    $(e.currentTarget).find('#matImagenH').val('IN');
+                }
+                //$(e.currentTarget).find('#imgIdModal').text("Código : " + codprd);
+                $(e.currentTarget).find('#precioModal').text(" Bs. " + precio);
+                $(e.currentTarget).find('#nomProdModal').text(nompro);
+                $(e.currentTarget).find('#imgAnadirModal').attr('src', srcimg);
+                $(e.currentTarget).find('#CodigoProdH').val(codprd);
+                $(e.currentTarget).find('#NombreProdH').val(nompro);
+                $(e.currentTarget).find('#PrecioProdH').val(precio);
+                $(e.currentTarget).find('#OrigenH').val(origen);
+                $(e.currentTarget).find('#SectorH').val(sector);
+                $(e.currentTarget).find('#MavLineaH').val(mavlin);
+                $(e.currentTarget).find('#MavFamiliaH').val(mavfam);
+                $(e.currentTarget).find('#MavOrigenH').val(mavori);
+                $(e.currentTarget).find('#madDescuentoH').val(pocentajeDescuento);
+                $(e.currentTarget).find('#cantidadMaximaH').val(cantidadMaxima);
+
+                $(e.currentTarget).find('#existenciaH').val(existencia);
+
+
+                var DecFloat = parseFloat(pocentajeDescuento);
+                if (DecFloat > 0) {
+                    $(e.currentTarget).find('#porcentajeDescuentoModal').text(pocentajeDescuento + "%");
+                    var img = $('<img style="width:65px; height:65px; margin-top:-32px; margin-left:-5px; position:absolute; z-index:1;"/>'); //Equivalent: $(document.createElement('img'))
+                    img.attr('src', '../Imagenes/oferta00.png');
+                    img.appendTo('#imagediv');
+                    //var rutaimg = '../Imagenes/oferta00.png';
+                    //$(e.currentTarget).find('#imgDescuentoModal').attr('src', rutaimg);
+                    $(e.currentTarget).find('#descuentoModal').text("Descuento: Bs " + descuento);
+                }
+
+
+                if (tieneStock == "True") {
+                    $(e.currentTarget).find('#tieneProdStock').text("");
+                }
+                else {
+                    $(e.currentTarget).find('#tieneProdStock').text("Producto Agotado");
+                }
+
+            })
+        });
+        $(document).ready(function (e) {
+            $('#modalImagen').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).data().id;
+
+                var datos = id.split("::");
+                var codprd = datos[0]; //Codigo de producto
+                var precio = datos[1]; //Precio del producto
+
+                var origen = datos[2]; //Origen
+                var sector = datos[3]; //Sector
+                var mavlin = datos[4]; //Mav Linea
+                var mavfam = datos[5]; //Mav Familia
+                var mavori = datos[6]; //Mav Origen
+                var nompro = datos[7]; //Nombre del producto
+                var tieneigm = datos[8]; //tiene imagen true false
+                var tieneStock = datos[9]; //tiene productos en existencia
+                var madDescuento = datos[10]; //descuento
+
+
+                if (tieneigm == "True") {
+                    var srcimg = '../../ImagenClient/' + codprd + '.png';
+                }
+                else {
+                    var srcimg = '../../ImagenClient/BLANCO.png';
+                }
+                //$(e.currentTarget).find('#imgIdModal').text("Código : " + codprd);
+                $(e.currentTarget).find('#precioModal').text(" Bs. " + precio);
+                $(e.currentTarget).find('#nomProdModal').text(nompro);
+                $(e.currentTarget).find('#imgAnadirModal').attr('src', srcimg);
+                $(e.currentTarget).find('#CodigoProdH').val(codprd);
+                $(e.currentTarget).find('#NombreProdH').val(nompro);
+                $(e.currentTarget).find('#PrecioProdH').val(precio);
+                $(e.currentTarget).find('#OrigenH').val(origen);
+                $(e.currentTarget).find('#SectorH').val(sector);
+                $(e.currentTarget).find('#MavLineaH').val(mavlin);
+                $(e.currentTarget).find('#MavFamiliaH').val(mavfam);
+                $(e.currentTarget).find('#MavOrigenH').val(mavori);
+                $(e.currentTarget).find('#madDescuento').val(madDescuento);
+
+                var des = parseFloat(precio) * madDescuento / 100;
+                des = des.toFixed(2);
+
+                $(e.currentTarget).find('#descuentoModal').text("Descuento: Bs " + des);
+
+                if (tieneStock == "True") {
+                    $(e.currentTarget).find('#tieneProdStock').text("");
+                }
+                else {
+                    $(e.currentTarget).find('#tieneProdStock').text("Sin Existencia");
+                }
+
+
+
+            })
+        });
+
+        //para Modificar del Carro
+        $(document).ready(function (e) {
+            $('#modalEditar').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).data().id;
+
+                var datos = id.split("::");
+                var codprd = datos[0]; //Codigo de producto
+                var precio = datos[1]; //Precio del producto
+                var nompro = datos[2]; //Nombre del producto
+                var canti = datos[3]; //Cantidad
+                if (codprd == "400490")
+                {
+                    canti = canti / 10;
+                }
+                var tieneigm = datos[4]; //tiene imagen true false
+                var cantidadMaxima = datos[5]; //Cantidad maxima que se puede comprar
+                /**/
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("ObtenerCantidadComprada")",
+                    data: { matCodigo: codprd},
+                    dataType: "text",
+                    success: function (msg) {
+                        $(e.currentTarget).find('#cantidadCompradaH').val(msg);
+
+                        //alert(msg);
+                    },
+                    error: function (req, status, error) {
+                        alert(error);
+                    }
+                });
+
+                //var cantidadComprada = datos[6] //Cantidad que el cliente ya compro en el mes
+
+                if (tieneigm == "True") {
+                    var srcimg = '../../ImagenClient/' + codprd + '.png';
+                }
+                else {
+                    var srcimg = '../../ImagenClient/BLANCO.png';
+                }
+
+                // $(e.currentTarget).find('#imgIdModal').text("Código : " + codprd);
+                $(e.currentTarget).find('#precioModal').text("Precio: Bs. " + precio);
+
+                $(e.currentTarget).find('#nomProdModal').text(nompro);
+                $(e.currentTarget).find('#imgAnadirModal').attr('src', srcimg);
+
+                $(e.currentTarget).find('#cantidad').val(canti);
+                $(e.currentTarget).find('#CodigoProdH').val(codprd);
+                $(e.currentTarget).find('#cantidadMaximaH').val(cantidadMaxima);
+
+
+
+            })
+        });
+
+        //para Eliminar del Carro
+        $(document).ready(function (e) {
+            $('#modalEliminar').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).data().id;
+
+                var datos = id.split("::");
+                var codprd = datos[0]; //Codigo de producto
+                var precio = datos[1]; //Precio del producto
+                var nompro = datos[2]; //Nombre del producto
+                var canti = datos[3]; //Cantidad
+                var tieneigm = datos[4]; //tiene imagen true false
+
+                if (tieneigm == "True") {
+                    var srcimg = '../../ImagenClient/' + codprd + '.png';
+                }
+                else {
+                    var srcimg = '../../ImagenClient/BLANCO.png';
+                }
+
+
+                // $(e.currentTarget).find('#imgIdModal').text("Código : " + codprd);
+                $(e.currentTarget).find('#precioModal').text(" Bs. " + precio);
+                $(e.currentTarget).find('#nomProdModal').text(nompro);
+                $(e.currentTarget).find('#imgAnadirModal').attr('src', srcimg);
+                $(e.currentTarget).find('#cantidadModal').text(canti);
+
+
+                $(e.currentTarget).find('#CodigoProdH').val(codprd);
+
+            })
+        });
+
+        //Modal Geolocalizacion
+        $(document).ready(function (e) {
+            $('#modalGeolocalizacion').on('show.bs.modal', function (e) {
+                //alert("Ubicacion");
+                initUbicacion();
+
+            })
+        });
+
+        //Modal Ruta
+        $(document).ready(function (e) {
+            $('#modalRuta').on('show.bs.modal', function (e) {
+                //Obtengo el usuId del vendedor
+                var idVendedor = $("#ListVendedor option:selected").val();
+                var fecIni = $("#fechaRecorridoIni").val();
+                var fecFin = $("#fechaRecorridoFin").val();
+
+                $.ajax({
+                type: "POST",
+                url: "@Url.Action("ObtenerVendedorVisitaClientes")",
+                data: { usuIdVendedor: idVendedor, fechaInicio: fecIni, fechaFin: fecFin},
+                dataType: "json",
+                success: function (msg) {
+                    var datos = msg;
+                    //Se valida si el origen de datos no contiene información.
+                    if (datos == null || datos.length == 0) {
+
+                        //Mostrar Mapa con texto no hay datos para mostrar
+
+
+                    }
+                    else
+                    {
+                        //Se recorre cada uno de los elementos del origen de datos.
+                        const coordenadas = [];
+                        const nombreFarmacias = [];
+
+
+                        var centradoLatitud = 0.000000;
+                        var centradoLongitud = 0.000000;
+
+
+                        $.each(datos, function (key, item) {
+                            var punto = new Object();
+                            //alert("tiene datos" + item)
+                            punto.lat = parseFloat(item.clgLatitud);
+                            punto.lng = parseFloat(item.clgLongitud);
+                            coordenadas.push(punto);
+
+                            var farmacia = new Object();
+                            //alert("tiene datos" + item)
+                            farmacia.descripcion = item.cliNombreComercial;
+
+                            nombreFarmacias.push(farmacia);
+
+
+
+
+                            centradoLatitud = parseFloat(item.clgLatitud);
+                            centradoLongitud = parseFloat(item.clgLongitud);
+
+                            //alert("tiene datos" + punto.lat + "")
+
+
+                        });
+                        //alert("Coordenadas"+coordenadas);
+
+                        const map = new google.maps.Map(document.getElementById("mapRuta"), {
+                            zoom: 14,
+                            center: { lat: centradoLatitud, lng: centradoLongitud}
+                        });
+
+                        const flightPath = new google.maps.Polyline({
+                            path: coordenadas,
+
+                            geodesic: true,
+                            strokeColor: "#FF0000",
+                            strokeOpacity: 1.0,
+                            strokeWeight: 2,
+                        });
+                        flightPath.setMap(map);
+                        for (i = 0; i < coordenadas.length; i++) {
+                            new google.maps.Marker({
+                                position: coordenadas[i],
+                                map: map,
+                                icon: "../../ImagenClient/Farmacia1.png",
+                                title: nombreFarmacias[i].descripcion,
+                            });
+                        }
+
+                    }
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+                });
+
+
+
+            })
+        });
+
+
+        //Modal Visita
+        $(document).ready(function (e) {
+            $('#modalVisita').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).data().id;
+
+                var datos = id.split("::");
+                var oriLatitud = datos[0]; //Origen Latitud
+                var oriLongitud = datos[1]; //Origen Longitud
+                var desLatitud = datos[2]; //Destino Latitud
+                var desLongitud = datos[3]; //Destino Longitud
+
+                const directionsRenderer = new google.maps.DirectionsRenderer({
+                    suppressMarkers: true
+                });
+                const directionsService = new google.maps.DirectionsService();
+                const map = new google.maps.Map(document.getElementById("mapVisita"), {
+                    zoom: 14,
+                    center: { lat: parseFloat(desLatitud), lng: parseFloat(desLongitud)  },
+                });
+                directionsRenderer.setMap(map);
+                calcularYMostrarVisita(directionsService, directionsRenderer, oriLatitud, oriLongitud, desLatitud, desLongitud, map);
+                document.getElementById("modoVisita").addEventListener("change", () => {
+                    calcularYMostrarVisita(directionsService, directionsRenderer, oriLatitud, oriLongitud, desLatitud, desLongitud, map);
+                });
+
+
+
+
+            })
+        });
+
+        function calcularYMostrarVisita(directionsService, directionsRenderer, oriLatitud, oriLongitud, desLatitud, desLongitud, map) {
+            const selectedMode = document.getElementById("modoVisita").value;
+
+
+
+            directionsService.route(
+                {
+                    origin: { lat: parseFloat(oriLatitud), lng: parseFloat(oriLongitud) },
+                    destination: { lat: parseFloat(desLatitud), lng: parseFloat(desLongitud) },
+                    // Note that Javascript allows us to access the constant
+                    // using square brackets and a string value as its
+                    // "property."
+                    travelMode: google.maps.TravelMode[selectedMode],
+                },
+                (response, status) => {
+                    if (status == "OK") {
+                        directionsRenderer.setDirections(response);
+                        var leg = response.routes[0].legs[0];
+
+                        new google.maps.Marker({
+                            position: leg.start_location,
+                            map: map,
+                            icon: "../../ImagenClient/Farmacia1.png",
+                            title: "Farmacia",
+                        });
+                        new google.maps.Marker({
+                            position: leg.end_location,
+                            map: map,
+                            icon: "../../ImagenClient/Vendedor1.png",
+                            title: "Vendedor",
+
+                        });
+
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+        }
+        //*********************Activo
+        //para Rastreo de Activo
+        $(document).ready(function (e) {
+            $('#modalRastreoActivo').on('show.bs.modal', function (e) {
+                var idAct = $(e.relatedTarget).data().id;
+                // alert("idCorres);
+
+                CargarRastreoUbicacionActivo(idAct);
+            })
+        });
+
+        //*********************correspondencia
+        //para Rastreo de correspondencia informacion
+        $(document).ready(function (e) {
+            $('#modalRastreoCorrespondencia').on('show.bs.modal', function (e) {
+                var idCorres = $(e.relatedTarget).data().id;
+                // alert("idCorres);
+                CargarDatosRastreo(idCorres);
+                CargarRastreoUbicacion(idCorres);
+            })
+        });
+        //para Detalle correspondencia registrar
+        $(document).ready(function (e) {
+            $('#modalRegistrarCorrespondencia').on('show.bs.modal', function (e) {
+                var idCorres = $(e.relatedTarget).data().id;
+                var datos = idCorres.split("::");
+
+                var corCodigo = datos[0];
+                var numeroGuiaC = datos[1];
+                var descripcionC = datos[2];
+                var remitenteC = datos[3];
+                var areaDestinoC = datos[4];
+                var divisionC = datos[5];
+                var fechaC = datos[6];
+                var corId = datos[7];
+
+                $('#inputCorCodigo').val(corCodigo);
+                $('#inputCorIdOculto').val(corId);
+
+                //Adicionar los valores a la tabla tblDivisionCorrespondencia
+
+                var tabla = 'tblRegistrarCorrespondenciaD';
+                //Se limpiar el contenido de la tabla, excepto los titulos de las columnas.
+                $('#' + tabla).find('tr:not(:first)').remove();
+                var _fila = $((document).createElement('tr'));
+                var i = 1;
+                _fila.attr('id', 'filaDivCor' + i);
+                //Se anexa la fila a la tabla.
+                $('#' + tabla).append(_fila);
+
+                //codigoC.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnacorCodigo = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _corCodigo = $((document).createTextNode(corCodigo));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnacorCodigo.append(_corCodigo);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCor' + i).append(_columnacorCodigo);
+
+                //numeroGuiaC.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaNumeroGuiaC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _numeroGuiaC = $((document).createTextNode(numeroGuiaC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaNumeroGuiaC.append(_numeroGuiaC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCor' + i).append(_columnaNumeroGuiaC);
+
+                //Descripcion.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaDescripcionC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _descripcionC = $((document).createTextNode(descripcionC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaDescripcionC.append(_descripcionC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCor' + i).append(_columnaDescripcionC);
+
+                //Remitente.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaRemitenteC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _remitenteC = $((document).createTextNode(remitenteC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaRemitenteC.append(_remitenteC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCor' + i).append(_columnaRemitenteC);
+
+                //Area Destino.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaAreaDestinoC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _areaDestinoC = $((document).createTextNode(areaDestinoC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaAreaDestinoC.append(_areaDestinoC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCor' + i).append(_columnaAreaDestinoC);
+
+                //Numeros de divisiones.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaDivisionesC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _divisionesC = $((document).createTextNode(divisionC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaDivisionesC.append(_divisionesC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCor' + i).append(_columnaDivisionesC);
+
+                //Fecha.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaFechaC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _fechaC = $((document).createTextNode(fechaC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaFechaC.append(_fechaC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCor' + i).append(_columnaFechaC);
+            })
+        });
+
+        //para Detalle correspondencia registrar Division
+        $(document).ready(function (e) {
+            $('#modaLRegistrarDivisionCorrespondenciaDetalle').on('show.bs.modal', function (e) {
+                var idCorres = $(e.relatedTarget).data().id;
+                var datos = idCorres.split("::");
+
+                var corCodigo = datos[0]; //Codigo de Cor codigo
+                var numeroGuiaC = datos[1];
+                var descripcionC = datos[2];
+                var remitenteC = datos[3];
+                var areaDestinoC = datos[4];
+                var divisionC = datos[5];
+                var fechaC = datos[6];
+                var corIdC = datos[7];
+
+
+                $('#inputCorIdOcultoD').val(corIdC);
+                //alert(corIdC);
+                //Adicionar los valores a la tabla tblDivisionCorrespondencia
+
+                var tabla = 'tblDivisionCorrespondenciaD';
+                //Se limpiar el contenido de la tabla, excepto los titulos de las columnas.
+                $('#' + tabla).find('tr:not(:first)').remove();
+                var _fila = $((document).createElement('tr'));
+                var i = 1;
+                _fila.attr('id', 'filaDivCorD' + i);
+                //Se anexa la fila a la tabla.
+                $('#' + tabla).append(_fila);
+
+                //codigoC.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnacorCodigo = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _corCodigo = $((document).createTextNode(corCodigo));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnacorCodigo.append(_corCodigo);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCorD' + i).append(_columnacorCodigo);
+
+                //numeroGuiaC.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaNumeroGuiaC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _numeroGuiaC = $((document).createTextNode(numeroGuiaC));
+
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaNumeroGuiaC.append(_numeroGuiaC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCorD' + i).append(_columnaNumeroGuiaC);
+
+                //Descripcion.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaDescripcionC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _descripcionC = $((document).createTextNode(descripcionC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaDescripcionC.append(_descripcionC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCorD' + i).append(_columnaDescripcionC);
+
+                //Remitente.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaRemitenteC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _remitenteC = $((document).createTextNode(remitenteC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaRemitenteC.append(_remitenteC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCorD' + i).append(_columnaRemitenteC);
+
+                //Area Destino.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaAreaDestinoC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _areaDestinoC = $((document).createTextNode(areaDestinoC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaAreaDestinoC.append(_areaDestinoC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCorD' + i).append(_columnaAreaDestinoC);
+
+                //Numeros de divisiones.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaDivisionesC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _divisionesC = $((document).createTextNode(divisionC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaDivisionesC.append(_divisionesC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCorD' + i).append(_columnaDivisionesC);
+
+                //Fecha.
+                //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                var _columnaFechaC = $((document).createElement('td'));
+
+                //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                var _fechaC = $((document).createTextNode(fechaC));
+
+                //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                _columnaFechaC.append(_fechaC);
+
+                //Se anexa la columna [_columnaNombre] a la fila.
+                $('#filaDivCorD' + i).append(_columnaFechaC);
+            })
+        });
+        //Modal Eliminar correspondencia=Paquetes
+
+        $(document).ready(function (e) {
+            $('#modalEliminarPaquetes').on('show.bs.modal', function (e) {
+                var idCorresp = $(e.relatedTarget).data().id;
+                $('#idPaquetes').val(idCorresp);
+                //alert(idCorresp);
+
+            })
+        });
+        //Modal Eliminar correspondencia detalle
+        $(document).ready(function (e) {
+            $('#modalEliminarCorr').on('show.bs.modal', function (e) {
+                var idCorresp = $(e.relatedTarget).data().id;
+                $('#idCorrespondencia').val(idCorresp);
+                // alert(idCorresp);
+
+            })
+        });
+
+        //Modal Visita
+        $(document).ready(function (e) {
+            $('#modalVisita').on('show.bs.modal', function (e) {
+                var id = $(e.relatedTarget).data().id;
+
+                var datos = id.split("::");
+                var oriLatitud = datos[0]; //Origen Latitud
+                var oriLongitud = datos[1]; //Origen Longitud
+                var desLatitud = datos[2]; //Destino Latitud
+                var desLongitud = datos[3]; //Destino Longitud
+
+                const directionsRenderer = new google.maps.DirectionsRenderer({
+                    suppressMarkers: true
+                });
+                const directionsService = new google.maps.DirectionsService();
+                const map = new google.maps.Map(document.getElementById("mapVisita"), {
+                    zoom: 14,
+                    center: { lat: parseFloat(desLatitud), lng: parseFloat(desLongitud) },
+                });
+                directionsRenderer.setMap(map);
+                calcularYMostrarVisita(directionsService, directionsRenderer, oriLatitud, oriLongitud, desLatitud, desLongitud, map);
+                document.getElementById("modoVisita").addEventListener("change", () => {
+                    calcularYMostrarVisita(directionsService, directionsRenderer, oriLatitud, oriLongitud, desLatitud, desLongitud, map);
+                });
+
+
+
+
+            })
+        });
+
+
+        //********************
+
+
+
+        //Para confirmar compra
+        $("#AceptaPolitica").click(function () {
+
+            if ($("#AceptaPolitica").is(':checked')) {
+
+                $("#BtnConfirmar").removeAttr('disabled');
+
+            } else {
+
+                $("#BtnConfirmar").prop("disabled", true);
+            }
+        });
+
+        //Para Boton Aceptar cambiar Password
+        $("#btnCambiaPass").click(function () {
+
+            var passActual = $("#txtPassword").val();
+            var passNuevo = $("#txtNuevoPassword").val();
+            var passRepit = $("#txtRepetirPassword").val();
+
+            //validar que no este en blanco el password
+            if (passActual == "" || passNuevo == "" || passRepit == "") {
+                if (passActual == "") {
+                    $("#PassError").text("Ingrese su contraseña Actual");
+                }
+                if (passNuevo == "") {
+                    $("#PassError").text("Ingrese su contraseña Nueva");v
+                }
+                if(passRepit == "")
+                $("#PassError").text("Ingrese su contraseña Nueva");
+            }
+            else {
+                //validamos  q el passwor nuevo y repetido se han iguales
+                if (passNuevo != passRepit) {
+                    $("#PassError").text("La contraseña no coincide");
+                }
+                else {
+                    //validamos que el password actual se ha distinto al password nuevo
+                    if (passActual == passNuevo) {
+                        $("#PassError").text("La contraseña nueva debe ser distinta a la actual");
+                    }
+                    else {
+                         $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CambioPassword")",
+                    data: { txtPassword: passActual, txtNuevoPassword: passNuevo},
+                    dataType: "text",
+                    success: function (msg) {
+                        //poner codigo con mesaje de exito o fracaso
+                        if (msg >= 1) {
+                            $("#PassExit").text("Clave modificada con exito!!");
+                            $("#PassError").text("");
+                            $("#txtPassword").val("");
+                            $("#txtNuevoPassword").val("");
+                            $("#txtRepetirPassword").val("");
+                            $('#modalPassword').modal('hide');
+                            $('#modalAlertaPasswordExito').modal('show');
+
+
+                        }
+                        if (msg < 1) {
+                            $("#PassExit").text("");
+                            $("#PassError").text("No se pudo cambiar clave intente nuevamente!!");
+                        }
+
+
+                    },
+                    error: function (req, status, error) {
+                        alert(error);
+                    }
+                });
+
+                    }
+                }
+            }
+
+
+        });
+
+        //Para Boton Ver Mapa de Equipos
+        $("#btnVerMapaEquipos").click(function () {
+
+            //alert("aaa");
+            //tengo que obtener la agencia y el equipo
+            //Obtengo el agencia y el equipo
+            var codAgencia = $("#ListAgencias option:selected").val();
+            var codEquipo = $("#ListEquipo option:selected").val();
+
+            //Enviar al api para que me traiga los vendedores y las ubicaciones de las farmamcias
+             // tabla de visitas
+            var myLatLng = { lat: -17.7960444, lng: -63.1907298 };
+
+            if (codAgencia == "1") {
+                myLatLng = { lat: -16.4897, lng: -68.1193 };
+            }
+
+            if (codAgencia == "2")
+            {
+                myLatLng = { lat: -17.414, lng: -66.1653 };
+            }
+            if (codAgencia == "4") {
+                myLatLng = { lat: -17.9647, lng: -67.106  };
+            }
+            if (codAgencia == "5") {
+                myLatLng = { lat: -19.5723, lng: -65.755 };
+            }
+            if (codAgencia == "6") {
+                myLatLng = { lat: -19.0429, lng: -65.2554 };
+            }
+            if (codAgencia == "7") {
+                myLatLng = { lat: -21.53549, lng: -64.72956 };
+            }
+            if (codAgencia == "8") {
+                myLatLng = { lat: -14.8258, lng: -64.9 };
+            }
+            if (codAgencia == "9") {
+                myLatLng = { lat: -11.0073, lng: -66.0583 };
+            }
+
+
+            const map = new google.maps.Map(document.getElementById("mapVendedorEquipos"), {
+                zoom: 13,
+                center: myLatLng,
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ObtenerGeolocalizacionEquipos")",
+                data: { idAgencia: codAgencia, idEquipo: codEquipo},
+                dataType: "json",
+                success: function (msg) {
+
+                    //alert("retorno de controller " + msg);
+                    var datos = msg;
+
+                    //Se recorre cada uno de los elementos del origen de datos.
+                    var i = 0;
+                    var titulo = "";
+                    $.each(datos, function (key, item) {
+                        //alert(item.cluLatitud);
+                        //alert(item.cluLongitud);
+                        titulo = item.cliNombreComercial + " ( " + item.usuNombre +" )";
+
+                            new google.maps.Marker({
+                                position: { lat: item.cluLatitud, lng: item.cluLongitud },
+                                map,
+                                icon: item.imagen,
+                                title: titulo,
+                            });
+
+
+                    });
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+
+
+
+
+        });
+
+        //Mostrar alertaS
+        $('#modalAlertaPassword').modal({ show: true, backdrop: 'static', keyboard: false });
+        $('#modalAlertaFacturaPendinte').modal('show');
+        $('#modalPedidoAgregado').modal('show');
+        $('#modalAlertaSaldoCompras').modal('show');
+        $('#modalAlertaCantMatLimite').modal('show');
+
+        //Para Boton Aceptar cambiar Alerta Password
+        $("#btnAlertaPass").click(function () {
+
+            var passActual = $("#textPassword").val();
+            var passNuevo = $("#textNuevoPassword").val();
+            var passRepit = $("#textRepetirPassword").val();
+
+            //validar que no este en blanco el password
+            if (passActual == "" || passNuevo == "" || passRepit == "") {
+                if (passRepit == "") {
+                    $("#PasswordError").text("Repita su Nueva su contraseña");
+
+                }
+                if (passNuevo == "") {
+                    $("#PasswordError").text("Ingrese su contraseña Nueva");v
+                }
+
+                if (passActual == "") {
+                    $("#PasswordError").text("Ingrese su contraseña Actual");
+                }
+            }
+            else {
+                //validamos  q el passwor nuevo y repetido se han iguales
+                if (passNuevo != passRepit) {
+                    $("#PasswordError").text("La contraseña no coincide");
+                }
+                else {
+                    //validamos que el password actual se ha distinto al password nuevo
+                    if (passActual == passNuevo) {
+                        $("#PasswordError").text("La contraseña nueva debe ser distinta a la actual");
+                    }
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            url: "@Url.Action("CambioPassword")",
+                            data: { txtPassword: passActual, txtNuevoPassword: passNuevo},
+                            dataType: "text",
+                            success: function (msg) {
+                            //poner codigo con mesaje de exito o fracaso
+                                if (msg >= 1) {
+                                    $("#PasswordExit").text("Clave modificada con exito!!");
+                                    $("#PasswordError").text("");
+                                    $("#textPassword").val("");
+                                    $("#textNuevoPassword").val("");
+                                    $("#textRepetirPassword").val("");
+                                    $('#modalAlertaPassword').modal('hide');
+                                    $('#modalAlertaPasswordExito').modal('show');
+                                }
+                                if (msg < 1) {
+                                    $("#PasswordExit").text("");
+                                    $("#PasswordError").text("No se pudo cambiar clave intente nuevamente!!");
+                                }
+                            },
+                            error: function (req, status, error) {
+                                alert(error);
+                            }
+                        });
+
+                    }
+                }
+            }
+        });
+
+
+
+
+
+        //Para sumar temporalmente los importes de los checkboxes
+        $('.ads_Checkbox').click(function () {
+
+            var arr = $('.ads_Checkbox:checked').map(function () {
+                return this.value;
+            }).get();
+
+            var montoTotal = 0;
+            var monto = 0;
+            for (var i in arr) {
+                var datos = arr[i].split("::");
+
+                monto = parseFloat(datos[1]);
+                montoTotal = montoTotal + monto;
+            }
+            montoTotal = montoTotal.toFixed(2);
+            if (montoTotal > 0) {
+                $("#montoTotalCheck").text("TOTAL ACUMULADO: Bs. " + montoTotal);
+            }
+            else {
+                $("#montoTotalCheck").text("");
+            }
+
+        });
+
+
+        //Mostrar alerta
+
+
+
+        if (window.history.replaceState) { // verificamos disponibilidad
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        window.onload = function () {
+            var contenedor = document.getElementById('contenedor_carga');
+            contenedor.style.visibility = 'hidden';
+            contenedor.style.opacity = '0';
+        }
+
+        $('.input100').each(function () {
+            $(this).on('blur', function () {
+                if ($(this).val().trim() != "") {
+                    $(this).addClass('has-val');
+                }
+                else {
+                    $(this).removeClass('has-val');
+                }
+            })
+        })
+
+    </script>
+
+    <!--correspondencia-->
+    <!--boton de Registrar correspondencia-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //Se asocia el evento click al Button [].
+            $('#btnRegistrarC').on('click', function () {
+                //Se invoca a la función para crear una nueva fila
+                RegistrarCorrespondencia();
+
+            });
+        });
+        //Para boton buscar correspondencia detalle
+        $("#btnBuscarCorrDetalle").click(function () {
+            CargarDatosCorresDetalleBuscar();
+        });
+    </script>
+
+    <!--boton de Registrar Archivero-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //Se asocia el evento click al Button [].
+            $('#btnRegistrarA').on('click', function () {
+                //Se invoca a la función para crear una nueva fila
+                RegistrarArchivero();
+
+            });
+        });
+    </script>
+
+    <!--boton de Limpiar correspondencia-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Se asocia el evento click al Button [].
+            $('#btnLimpiarRegistrarC').on('click', function () {
+                //limpiamos los campos
+                $('#inputCodigoC').val('');
+                $('#inputNroGuiaC').val('');
+                $('#inputRemitenteC').val('');
+                $('#inputDestinoC').val('Seleccione');
+                $("#inputDescripcionC").val('Seleccione');
+                $("#inputUrgenteC").prop('checked', false);
+            });
+
+        });
+    </script>
+
+    <!--boton de Registrar Detalle correspondencia-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //Se asocia el evento click al Button [].
+            $('#btnRegistrarCorresDetalle').on('click', function () {
+                //Se invoca a la función para crear una nueva fila
+                registrarCorresDetalle();
+
+            });
+        });
+    </script>
+    <!--boton de Registrar Division Detalle correspondencia-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //Se asocia el evento click al Button [].
+            $('#btnRegistrarCorresDivisionD').on('click', function () {
+                //Se invoca a la función para crear una nueva fila
+                registrarCorresDivisionD();
+
+            });
+        });
+    </script>
+
+    <!--boton de Limpiar Detalle correspondencia-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Se asocia el evento click al Button [].
+            $('#btnLimpiarRegistrarDettalleC').on('click', function () {
+                //limpiamos los campos
+
+                $('#inputusuFinalId').val('Seleccione');
+                $('#inputCdeDetalle').val('');
+                $("#inputCdeUrgente").prop('checked', false);
+            });
+
+        });
+
+    </script>
+
+    <!--boton de Limpiar Division Detalle correspondencia-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Se asocia el evento click al Button [].
+            $('#btnLimpiarRegistrarDivisionCorresD').on('click', function () {
+                //limpiamos los campos
+                $('#inputCorIdD').val('');
+                $('#inputusuFinalIdD').val('Seleccione'); inputusuFinalId
+                $('#inputCdeDetalleD').val('');
+                $("#inputCdeUrgenteD").prop('checked', false);
+            });
+
+        });
+
+    </script>
+    <!--boton de Limpiar Archiveros-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Se asocia el evento click al Button [].
+            $('#btnLimpiarRegistrarA').on('click', function () {
+                //limpiamos los campos
+                $('#inputCodigoA').val('');
+                $('#inputNombreA').val('');
+                $('#inputDescripcionA').val('');
+                $("#inputAreaA").val('Seleccione');
+
+            });
+
+        });
+    </script>
+
+
+
+
+    <!------------------------------------------->
+
+
+    <script type="text/javascript">
+        function inicializacionMapas() {
+            initVisita();//Pagina web seguimiento el div lo cree en el modal
+           // initUbicacion();
+        }
+        function initUbicacion() {
+            //alert("ubi");
+            //mapa de ubicacion de clientes
+            const myLatLng = { lat: -16.4897, lng: -68.1193 };
+            const map = new google.maps.Map(document.getElementById("mapClientes"), {
+                zoom: 14,
+                center: myLatLng,
+            });
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ObtenerUbicacionClientes")",
+                data: {},
+                dataType: "text",
+                success: function (msg) {
+                    var objarr = JSON.parse(msg);
+                    for (var i in objarr) {
+                        var datos = objarr[i];
+                        // alert(datos.cluLatitud);
+                        new google.maps.Marker({
+                            position: { lat: datos.cluLatitud, lng: datos.cluLongitud },
+                            map,
+                            icon: "../../ImagenClient/Farmacia1.png",
+
+                            title: datos.cliNombreComercial,
+                        });
+                    }
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+        function initVisita() {
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+            const directionsService = new google.maps.DirectionsService();
+            const map = new google.maps.Map(document.getElementById("mapAAA"), {
+                zoom: 14,
+                center: { lat: 37.77, lng: -122.447 },
+            });
+            directionsRenderer.setMap(map);
+            calculateAndDisplayRoute(directionsService, directionsRenderer);
+
+
+        }
+        function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+            const selectedMode = document.getElementById("mode").value;
+            directionsService.route(
+                {
+                    origin: { lat: -18, lng: -63.136361 },
+                    destination: { lat: -17.7846352, lng: -63.1959458 },
+                    // Note that Javascript allows us to access the constant
+                    // using square brackets and a string value as its
+                    // "property."
+                    travelMode: google.maps.TravelMode[selectedMode],
+                },
+                {
+                    origin: { lat: -18, lng: -63.236361 },
+                    destination: { lat: -17.6846352, lng: -63.2959458 },
+                    // Note that Javascript allows us to access the constant
+                    // using square brackets and a string value as its
+                    // "property."
+                    travelMode: google.maps.TravelMode[selectedMode],
+                },
+                (response, status) => {
+                    if (status == "OK") {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+        }
+
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY6Q4YsR_cu84qZEhaBTjMmZxEHxutPeQ&callback=inicializacionMapas"
+            type="text/javascript">
+    </script>
+
+
+    <script type="text/javascript">
+        //Función para generar y retornar un conjunto de datos de prueba.
+        function CargarDatos() {
+
+            //Obtengo el usuId del vendedor
+            var idVendedor = $("#ListVendedor option:selected").val();
+            var fecIni = $("#fechaRecorridoIni").val();
+            var fecFin = $("#fechaRecorridoFin").val();
+
+            //Obtengo fechas
+
+            // tabla de visitas
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ObtenerVendedorVisitaClientes")",
+                data: { usuIdVendedor: idVendedor, fechaInicio: fecIni, fechaFin: fecFin},
+                dataType: "json",
+                success: function (msg) {
+                    //alert("retorno de controller" + msg);
+
+                    //alert("retorno de controller " + msg);
+                    var datos = msg;
+                    var tabla = 'tblConsulta';
+                    //Se limpiar el contenido de la tabla, excepto los titulos de las columnas.
+                    $('#' + tabla).find('tr:not(:first)').remove();
+
+                    //Se valida si el origen de datos no contiene información.
+                    if (datos == null || datos.length == 0) {
+                        //alert("Entro a mostrar personas sin datos");
+                        //Se crea una nueva fila.
+                        var _filaVacia = $((document).createElement('tr'));
+                        _filaVacia.css('text-align', 'center');
+
+                        //Se anexa la fila a la tabla.
+                        $('#' + tabla).append(_filaVacia);
+
+                        //Se crea una columna y se le asigna un tamaño de 4 columnas.
+                        var _columnaVacia = $((document).createElement('td'));
+                        _columnaVacia.attr('colspan', 4);
+
+                        //Se crea un nodo de texto para definir un mensaje que se mostrará cuando no haya elementos.
+                        var _contenidoVacio = $((document).createTextNode('No se encontraron resultados.'));
+
+                        //Se anexa el nodo de texto a la columna.
+                        _columnaVacia.append(_contenidoVacio);
+
+                        //Se anexa la columna a la fila.
+                        _filaVacia.append(_columnaVacia);
+
+                        //Se finaliza la función.
+
+                    }
+
+                    //Se recorre cada uno de los elementos del origen de datos.
+                    var i = 0;
+                    $.each(datos, function (key, item) {
+                        i = i + 1;
+                        //alert("tiene datos" + item)
+                        //Se crea una nueva fila y se le asigna un identificador.
+                        var _fila = $((document).createElement('tr'));
+                        _fila.attr('id', 'fila' + i);
+
+                        //Se anexa la fila a la tabla.
+                        $('#' + tabla).append(_fila)
+
+                        //Identificador de la persona.
+
+                        //Se crea una nueva columna para encapsular los identificadores de las personas.
+                        var _columnaCont = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el identificador de la persona.
+                        var _i = $((document).createTextNode(i));
+
+                        //Se anexa a la columna [_columnaPersonaId] el nodo de texto.
+                        _columnaCont.append(_i);
+
+                        //Se anexa la columna [_columnaPersonaId] a la fila.
+                        $('#fila' + i).append(_columnaCont);
+
+                        //cliNombreComercial.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnaNombreComercial = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _nombreComercial = $((document).createTextNode(item.cliNombreComercial));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnaNombreComercial.append(_nombreComercial);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#fila' + i).append(_columnaNombreComercial);
+
+                        //cliNombreFiscal.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnaNombreFiscal = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _nombreFiscal = $((document).createTextNode(item.cliNombreFiscal));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnaNombreFiscal.append(_nombreFiscal);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#fila' + i).append(_columnaNombreFiscal);
+
+
+                        //Fecha.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnaFecha = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _nombreFecha = $((document).createTextNode(item.clgFechaGPS));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnaFecha.append(_nombreFecha);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#fila' + i).append(_columnaFecha);
+
+                        //Distancia.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnaDistancia = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+
+                        if (item.distancia != -1) {
+                            if (item.cluLatitud != 0 && item.cluLongitud != 0) {
+
+                                var _nombreDistancia = $((document).createTextNode(item.distancia + ' Km.'));
+                            }
+                            else {
+                                var _nombreDistancia = $((document).createTextNode('0'));
+                            }
+
+
+                        }
+                        else {
+                            var _nombreDistancia = $((document).createTextNode('Visitado'));
+                        }
+
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnaDistancia.append(_nombreDistancia);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#fila' + i).append(_columnaDistancia);
+
+
+                        //Ver Mapa.
+
+                        if (item.cluLatitud != 0 && item.cluLongitud != 0) {
+                            //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                            var _columnaVerRuta = $((document).createElement('td'));
+
+                            //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                            var createA = document.createElement('a');
+                            var createAText = document.createTextNode('Ver Visita');
+                            createA.setAttribute('href', "#");
+                            createA.setAttribute('class', "btn btn-primary px-1 py-1 mt-auto");
+                            createA.setAttribute('data-toggle', "modal");
+                            createA.setAttribute('data-target', "#modalVisita");
+                            var origenLatitud = item.clgLatitud;
+                            var origenLongitud = item.clgLongitud;
+                            var destinoLatitud = item.cluLatitud;
+                            var destinoLongitud = item.cluLongitud;
+
+
+
+
+                            var dataModalRuta = origenLatitud + '::' + origenLongitud + '::' + destinoLatitud + '::' + destinoLongitud;
+                            createA.setAttribute('data-id', dataModalRuta);
+                            createA.appendChild(createAText);
+
+
+                            //Se anexa a la columna [_columnaNombre] el nodo de texto.
+
+                            _columnaVerRuta.append(createA);
+
+                            //Se anexa la columna [_columnaNombre] a la fila.
+                            $('#fila' + i).append(_columnaVerRuta);
+
+                        }
+                        else {
+                            //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                            var _columnaVerRuta = $((document).createElement('td'));
+
+                            //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                            var createA = document.createElement('img');
+
+                            createA.setAttribute('src',"../../ImagenClient/No_gps.png");
+
+
+
+
+
+
+
+                            //Se anexa a la columna [_columnaNombre] el nodo de texto.
+
+                            _columnaVerRuta.append(createA);
+
+                            //Se anexa la columna [_columnaNombre] a la fila.
+                            $('#fila' + i).append(_columnaVerRuta);
+
+                        }
+
+
+
+
+
+
+                    });
+
+
+
+                    //alert(objarr[0]);
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+
+
+
+
+
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //Se asocia el evento click al Button [btnCreaTabla].
+            $('#btnCreaTabla').on('click', function () {
+                //Se invoca a la función para crear y mostrar la tabla con un origen de datos.
+
+                CargarDatos();
+                //alert("Datos de la funcion"+ datosObten);
+
+            });
+        });
+    </script>
+   <!----------------correspondencia-------------->
+    <script type="text/javascript">
+
+          //Función para generar y retornar un conjunto de datos para informacion rastreo.
+         function CargarDatosRastreo(idCorres) {
+
+
+             // tabla Rastreo Correspondencia detalle Informacion (division)
+             $.ajax({
+                 type: "POST",
+                 url: "@Url.Action("obtenerCorrespondenciaDetalleInformación")",
+                 data: { idCorrespondencia: idCorres},
+                 dataType: "json",
+                 success: function (msg) {
+                     //alert("retorno de controller" + msg);
+
+                     //alert("retorno de controller " + msg);
+                     var datos = msg;
+                     var tabla = 'tblRastreo';
+                     //Se limpiar el contenido de la tabla, excepto los titulos de las columnas.
+                     $('#' + tabla).find('tr:not(:first)').remove();
+
+                     //Se valida si el origen de datos no contiene información.
+                     if (datos == null || datos.length == 0) {
+                         //alert("Entro a mostrar personas sin datos");
+                         //Se crea una nueva fila.
+                         var _filaVacia = $((document).createElement('tr'));
+                         _filaVacia.css('text-align', 'center');
+
+                         //Se anexa la fila a la tabla.
+                         $('#' + tabla).append(_filaVacia);
+
+                         //Se crea una columna y se le asigna un tamaño de 4 columnas.
+                         var _columnaVacia = $((document).createElement('td'));
+                         _columnaVacia.attr('colspan', 6);
+
+                         //Se crea un nodo de texto para definir un mensaje que se mostrará cuando no haya elementos.
+                         var _contenidoVacio = $((document).createTextNode('No se encontraron resultados.'));
+
+                         //Se anexa el nodo de texto a la columna.
+                         _columnaVacia.append(_contenidoVacio);
+
+                         //Se anexa la columna a la fila.
+                         _filaVacia.append(_columnaVacia);
+
+                         //Se finaliza la función.
+
+                     }
+
+                     //Se recorre cada uno de los elementos del origen de datos.
+                     var i = 0;
+                     $.each(datos, function (key, item) {
+                         i = i + 1;
+
+                         //Se crea una nueva fila y se le asigna un identificador.
+                         var _fila = $((document).createElement('tr'));
+                         _fila.attr('id', 'filaCorInf' + i);
+
+                         //Se anexa la fila afilaCorInf la tabla.
+                         $('#' + tabla).append(_fila)
+
+                         //Identificador de la persona.
+
+                         //Se crea una nueva columna para encapsular los identificadores de las personas.
+                         var _columnaCont = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el identificador de la persona.
+                         var _i = $((document).createTextNode(i));
+
+                         //Se anexa a la columna [_columnaPersonaId] el nodo de texto.
+                         _columnaCont.append(_i);
+
+                         //Se anexa la columna [_columnaPersonaId] a la fila.
+                         $('#filaCorInf' + i).append(_columnaCont);
+
+                         //Codigo Padre.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaCodigo = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _codigoPadre = $((document).createTextNode(item.codPadre));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaCodigo.append(_codigoPadre);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorInf' + i).append(_columnaCodigo);
+
+                         //Codigo Remitentes.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaRemitente = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _corRemitente = $((document).createTextNode(item.corRemitente));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaRemitente.append(_corRemitente);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorInf' + i).append(_columnaRemitente);
+
+                         //Codigo Detalles.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaDetalle = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _corDetalle = $((document).createTextNode(item.cdeDetalles));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaDetalle.append(_corDetalle);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorInf' + i).append(_columnaDetalle);
+
+                         //Codigo Estado.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaEstado = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _corEstado = $((document).createTextNode(item.cdeEstado));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaEstado.append(_corEstado);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorInf' + i).append(_columnaEstado);
+
+                         //Codigo fecha de recepcion.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaFechaRec = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _corFecha = $((document).createTextNode(item.corFechaIni));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaFechaRec.append(_corFecha);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorInf' + i).append(_columnaFechaRec);
+                     });
+                 },
+                 error: function (req, status, error) {
+                     alert(error);
+                 }
+             });
+
+        }
+
+        function CargarDatosCorresDetalleBuscar() {
+
+            //Obtengo el usuId del vendedor
+            var codigoCorres = $("#codigoBusquedaCorres").val();
+            var detalleCorres = $("#detalleBusquedaCorres").val();
+            var remitenteCorres = $("#remitenteBusquedaCorres").val();
+            var fechaIniCorres = $("#fechaIniBusquedaCorres").val();
+            var fechaFinCorres = $("#fechaFinBusquedaCorres").val();
+            //Obtengo fechas
+
+            // tabla de buscador
+            // tabla de visitas
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("CorrespondenciaDetalleBuscador")",
+                data: { codigoBusquedaCorres: codigoCorres, detalleBusquedaCorres: detalleCorres, remitenteBusquedaCorres: remitenteCorres, fechaIniBusquedaCorres: fechaIniCorres, fechaFinBusquedaCorres: fechaFinCorres },
+                dataType: "json",
+                success: function (msg) {
+                    //alert("retorno de controller" + msg);
+
+                    //alert("retorno de controller " + msg);
+                    var datos = msg;
+                    var tabla = 'tblBuscadorCorresDetalle';
+                    //Se limpiar el contenido de la tabla, excepto los titulos de las columnas.
+                    $('#' + tabla).find('tr:not(:first)').remove();
+
+                    //Se valida si el origen de datos no contiene información.
+                    if (datos == null || datos.length == 0) {
+                        //alert("Entro a mostrar personas sin datos");
+                        //Se crea una nueva fila.
+                        var _filaVacia = $((document).createElement('tr'));
+                        _filaVacia.css('text-align', 'center');
+
+                        //Se anexa la fila a la tabla.
+                        $('#' + tabla).append(_filaVacia);
+
+                        //Se crea una columna y se le asigna un tamaño de 4 columnas.
+                        var _columnaVacia = $((document).createElement('td'));
+                        _columnaVacia.attr('colspan', 4);
+
+                        //Se crea un nodo de texto para definir un mensaje que se mostrará cuando no haya elementos.
+                        var _contenidoVacio = $((document).createTextNode('No se encontraron resultados.'));
+
+                        //Se anexa el nodo de texto a la columna.
+                        _columnaVacia.append(_contenidoVacio);
+
+                        //Se anexa la columna a la fila.
+                        _filaVacia.append(_columnaVacia);
+
+                        //Se finaliza la función.
+
+                    }
+
+                    //Se recorre cada uno de los elementos del origen de datos.
+                    var i = 0;
+                    $.each(datos, function (key, item) {
+                        i = i + 1;
+
+                        //Se crea una nueva fila y se le asigna un identificador.
+                        var _fila = $((document).createElement('tr'));
+                        _fila.attr('id', 'filaBus' + i);
+
+                        //Se anexa la fila a la tabla.
+                        $('#' + tabla).append(_fila)
+
+                        //Codigo detalle.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnaCodigoCorresB = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _codigoBusqueda = $((document).createTextNode(item.cdeCodigo));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnaCodigoCorresB.append(_codigoBusqueda);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnaCodigoCorresB);
+
+                        //destinatario.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnacdeDestinatario = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _cdeDestinatario = $((document).createTextNode(item.cdeDestinatario));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnacdeDestinatario.append(_cdeDestinatario);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnacdeDestinatario);
+
+                        //Detalle.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnacdeDetalles = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _cdeDetalles = $((document).createTextNode(item.cdeDetalles));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnacdeDetalles.append(_cdeDetalles);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnacdeDetalles);
+
+                        //remitente.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnacorRemitente = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _corRemitente = $((document).createTextNode(item.corRemitente));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnacorRemitente.append(_corRemitente);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnacorRemitente);
+
+                        //codigo correspondencia.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnacorCodigo = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _corCodigo = $((document).createTextNode(item.corCodigo));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnacorCodigo.append(_corCodigo);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnacorCodigo);
+
+
+                        //fecha inicial.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnacdeFechaIni = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _cdeFechaIni = $((document).createTextNode(item.cdeFechaIni));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnacdeFechaIni.append(_cdeFechaIni);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnacdeFechaIni);
+
+                        //nombre.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnausunombre = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _usunombre = $((document).createTextNode(item.usunombre));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnausunombre.append(_usunombre);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnausunombre);
+
+                        //ubicacion Actual.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnacouActual = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _couActual = $((document).createTextNode(item.couActual));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnacouActual.append(_couActual);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnacouActual);
+
+
+                        //rastreo.
+
+                        var _columnaVerRastreo = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var createA = document.createElement('a');
+
+                        createA.setAttribute('href', "#");
+
+                        createA.setAttribute('data-toggle', "modal");
+                        createA.setAttribute('data-target', "#modalRastreoCorrespondencia");
+                        var createImg = document.createElement('img');
+                        createImg.setAttribute('src', '../../Imagenes/rastreo.png')
+                        var origenIdCorres = item.cdeId;
+
+                        createA.setAttribute('data-id', origenIdCorres);
+                        createA.appendChild(createImg);
+
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+
+                        _columnaVerRastreo.append(createA);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaBus' + i).append(_columnaVerRastreo);
+
+
+
+
+                    });
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+          //Función para generar y retornar un conjunto de datos para informacion ubicacion rastreo.
+         function CargarRastreoUbicacion(idCorres) {
+
+
+             // tabla Rastreo Division Informacion
+             $.ajax({
+                 type: "POST",
+                 url: "@Url.Action("ObtenerCorrespondenciaDetalleInformacionCelular")",
+                 data: { idCorrespondencia: idCorres},
+                 dataType: "json",
+                 success: function (msg) {
+                     //alert("retorno de controller" + msg);
+
+                     //alert("retorno de controller " + msg);
+                     var datos = msg;
+                     var tabla = 'tblRastreoUbicacion';
+                     //Se limpiar el contenido de la tabla, excepto los titulos de las columnas.
+                     $('#' + tabla).find('tr:not(:first)').remove();
+
+                     //Se valida si el origen de datos no contiene información.
+                     if (datos == null || datos.length == 0) {
+                         //alert("Entro a mostrar personas sin datos");
+                         //Se crea una nueva fila.
+                         var _filaVacia = $((document).createElement('tr'));
+                         _filaVacia.css('text-align', 'center');
+
+
+
+                         //Se anexa la fila a la tabla.
+                         $('#' + tabla).append(_filaVacia);
+
+                         //Se crea una columna y se le asigna un tamaño de 4 columnas.
+                         var _columnaVacia = $((document).createElement('td'));
+                         _columnaVacia.attr('colspan', 6);
+
+                         //Se crea un nodo de texto para definir un mensaje que se mostrará cuando no haya elementos.
+                         var _contenidoVacio = $((document).createTextNode('No se encontraron resultados.'));
+
+
+
+                         //Se anexa el nodo de texto a la columna.
+                         _columnaVacia.append(_contenidoVacio);
+
+                         //Se anexa la columna a la fila.
+                         _filaVacia.append(_columnaVacia);
+
+                         //Se finaliza la función.
+
+                     }
+
+                     //Se recorre cada uno de los elementos del origen de datos.
+                     var i = 0;
+                     $.each(datos, function (key, item) {
+                         i = i + 1;
+
+                         //Se crea una nueva fila y se le asigna un identificador.
+                         var _fila = $((document).createElement('tr'));
+                         _fila.attr('id', 'filaCorUbi' + i);
+
+                         //Se anexa la fila a la tabla.
+                         $('#' + tabla).append(_fila);
+
+                         //Identificador de la persona.
+
+                         //Se crea una nueva columna para encapsular los identificadores de las personas.
+                         var _columnaCont = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el identificador de la persona.
+                         var _i = $((document).createTextNode(i));
+
+                         //Se anexa a la columna [_columnaPersonaId] el nodo de texto.
+                         _columnaCont.append(_i);
+
+
+                         //Se anexa la columna [_columnaPersonaId] a la fila.
+                         $('#filaCorUbi' + i).append(_columnaCont);
+
+                         //usuario.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaUsuario = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _codigoUsuario = $((document).createTextNode(item.nombre));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaUsuario.append(_codigoUsuario);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorUbi' + i).append(_columnaUsuario);
+
+                         //lugar.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaLugar = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _corLugar = $((document).createTextNode(item.ubicacion));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaLugar.append(_corLugar);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorUbi' + i).append(_columnaLugar);
+
+                         //Fecha Cambio.
+
+                         //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                         var _columnaFechaCambio = $((document).createElement('td'));
+
+                         //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                         var _corFechaCambio = $((document).createTextNode(item.fecha));
+
+                         //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                         _columnaFechaCambio.append(_corFechaCambio);
+
+                         //Se anexa la columna [_columnaNombre] a la fila.
+                         $('#filaCorUbi' + i).append(_columnaFechaCambio);
+
+
+                     });
+                 },
+                 error: function (req, status, error) {
+                     alert(error);
+                 }
+             });
+
+
+        }
+
+
+    </script>
+
+    <!--Activos-->
+
+    <script>
+
+        function CargarRastreoUbicacionActivo(idAct) {
+
+
+            // tabla Rastreo Division Informacion
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ObtenerActivoUbicacionHistoricoListar")",
+                data: { idActivo: idAct },
+                dataType: "json",
+                success: function (msg) {
+                    //alert("retorno de controller" + msg);
+
+                    //alert("retorno de controller " + msg);
+                    var datos = msg;
+                    var tabla = 'tblRastreoUbicacionActivo';
+                    //Se limpiar el contenido de la tabla, excepto los titulos de las columnas.
+                    $('#' + tabla).find('tr:not(:first)').remove();
+
+                    //Se valida si el origen de datos no contiene información.
+                    if (datos == null || datos.length == 0) {
+                        //alert("Entro a mostrar personas sin datos");
+                        //Se crea una nueva fila.
+                        var _filaVacia = $((document).createElement('tr'));
+                        _filaVacia.css('text-align', 'center');
+
+
+
+                        //Se anexa la fila a la tabla.
+                        $('#' + tabla).append(_filaVacia);
+
+                        //Se crea una columna y se le asigna un tamaño de 4 columnas.
+                        var _columnaVacia = $((document).createElement('td'));
+                        _columnaVacia.attr('colspan', 4);
+
+                        //Se crea un nodo de texto para definir un mensaje que se mostrará cuando no haya elementos.
+                        var _contenidoVacio = $((document).createTextNode('No se encontraron resultados.'));
+
+
+
+                        //Se anexa el nodo de texto a la columna.
+                        _columnaVacia.append(_contenidoVacio);
+
+                        //Se anexa la columna a la fila.
+                        _filaVacia.append(_columnaVacia);
+
+                        //Se finaliza la función.
+
+                    }
+
+                    //Se recorre cada uno de los elementos del origen de datos.
+                    var i = 0;
+                    $.each(datos, function (key, item) {
+                        i = i + 1;
+
+                        //Se crea una nueva fila y se le asigna un identificador.
+                        var _fila = $((document).createElement('tr'));
+                        _fila.attr('id', 'filaUbiActivo' + i);
+
+                        //Se anexa la fila a la tabla.
+                        $('#' + tabla).append(_fila);
+
+                        //Identificador de la persona.
+
+                        //Se crea una nueva columna para encapsular los identificadores de las personas.
+                        var _columnaCont = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el identificador de la persona.
+                        var _i = $((document).createTextNode(i));
+
+                        //Se anexa a la columna [_columnaPersonaId] el nodo de texto.
+                        _columnaCont.append(_i);
+
+
+                        //Se anexa la columna [_columnaPersonaId] a la fila.
+                        $('#filaUbiActivo' + i).append(_columnaCont);
+
+                        //usuario.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnaUsuario = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _usuario = $((document).createTextNode(item.usuNombre));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnaUsuario.append(_usuario);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaUbiActivo' + i).append(_columnaUsuario);
+
+
+
+                        //Fecha Cambio.
+
+                        //Se crea una nueva columna para encapsular el nombre completo de las personas.
+                        var _columnaFechaCambio = $((document).createElement('td'));
+
+                        //Se crea un nodo de texto y se le asigna el nombre completo de la persona.
+                        var _activoFechaCambio = $((document).createTextNode(item.acuFecha));
+
+                        //Se anexa a la columna [_columnaNombre] el nodo de texto.
+                        _columnaFechaCambio.append(_activoFechaCambio);
+
+                        //Se anexa la columna [_columnaNombre] a la fila.
+                        $('#filaUbiActivo' + i).append(_columnaFechaCambio);
+
+
+                    });
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+    </script>
+
+
+
+
+</body>
+    @RenderSection("Scripts", required: false)
+</html>
+
+

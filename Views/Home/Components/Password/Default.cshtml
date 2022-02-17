@@ -1,0 +1,53 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="card bg-card1">
+    <div class="modal-header text-right">
+        <h5 class="modal-title texto2"><strong class="text-center">Cambio De Password</strong></h5>
+      
+        <button type="button" class="close text-right" style="background-color:#48cfb4; color:white; width:60px; height:60px; border:3px solid #48cfb4; border-color: #48cfb4;" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div>
+        <form class="text-left">
+        <h6 id="PassExit" class="text-success"></h6>
+        <h6 id="PassError" class="alert-danger"></h6>
+        
+            <div class="ml-2">
+                <small>Contraseña Actual</small>
+            </div>
+            <div class="input-group">
+
+                <input name="txtPassword" id="txtPassword" type="password" placeholder="" aria-label="Password" class="texto5 search-query" required>
+            </div>
+            <div class="ml-2">
+                <small> Nueva Contraseña</small>
+            </div>
+            <div class="input-group">
+
+                <input name="txtNuevoPassword" id="txtNuevoPassword" type="password" placeholder="" aria-label="Password" class="texto5 search-query" required>
+            </div>
+            <div class="ml-2">
+                <small>Repetir Contraseña</small>
+            </div>
+            <div class="input-group">
+
+                <input name="txtRepetirPassword" id="txtRepetirPassword" type="password" placeholder="" aria-label="Password" class="texto5 search-query" required>
+            </div>
+            </form>
+            <div class="modal-footer text-center">
+                
+
+                        <input type="button" name="btnCambiaPass" id="btnCambiaPass" value="Aceptar" class="btn btn-primary2 mt-auto mr-5 pr-1" />
+
+                    
+            </div>
+
+        
+
+    </div>
+
+ </div>

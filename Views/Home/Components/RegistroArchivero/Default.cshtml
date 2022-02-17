@@ -1,0 +1,56 @@
+﻿@model clsRegistrarArchivero
+<div class="modal-header text-right">
+    <h4 class="modal-title texto2 text-center mx-5" id="exampleModalScrollableTitle">REGISTRO DE ARCHIVERO</h4>
+    <button type="button" class="close text-right" style="background-color:#48cfb4; color:white; width:60px; height:60px; border:3px solid #48cfb4; border-color: #48cfb4;" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body justify-content-center" style=" margin-left: 10px; margin-right: 20px;">
+
+    <form class="justify-content-center" asp-controller="Home" asp-action="RegistrarArchivero" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-5 ml-md-3 mr-md-5">
+                <label for="inputNombre">Codigo: </label>
+                <input type="text" class="form-control" id="inputCodigoA" name="inputCodigoA" value="" required>
+            </div>
+
+
+            <div class="form-group col-md-5 mr-md-3">
+                <label for="inputNombre">Nombre:</label>
+                <input type="text" class="form-control" id="inputNombreA" name="inputNombreA" value="" required>
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-12 col-md-5 ml-md-3 mr-md-5">
+                <label for="inputNombre">Descripcion:</label>
+                <input type="text" class="form-control" id="inputDescripcionA" name="inputDescripcionA" value="" required>
+            </div>
+
+            <div class="form-group col-sm-12 col-md-5 mr-md-3">
+                <label for="inputNombre">Area: </label>
+
+                <select id="inputAreaA" class="form-control" name="inputAreaA" value="" required>
+                    
+                    @foreach (var obj in Model.ListListadoAreaDestino)
+                    {
+                        <option value="@obj.areid">@obj.AreNombre</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+        
+        <div class="modal-footer justify-content-center">
+            <div class="justify-content-center mr-3">
+                <a href="#" class="btn btn-primary ml-2" id="btnLimpiarRegistrarA">Limpiar</a>
+
+            </div>
+            <div class="justify-content-center">
+                <button type="submit" id="btnRegistrarA" class="btn btn-primary ml-5">Registrar</button>
+            </div>
+        </div>
+    </form>
+
+</div>

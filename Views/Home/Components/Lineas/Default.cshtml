@@ -1,0 +1,32 @@
+﻿@model List<clsLineaListarResponse>
+
+<div class="modal-header text-right">
+    <h4 class="modal-title text-center texto2" id="exampleModalScrollableTitle">Lineas</h4>
+    <button type="button" class="close text-right" style="background-color:#48cfb4; color:white; width:60px; height:60px; border:3px solid #48cfb4; border-color: #48cfb4;" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+
+    @foreach (var obj in Model)
+    {
+        <form asp-controller="Home" asp-action="LineasProd" method="post">
+            <div class="row bg-linea">
+                <div class="col-md-12 login-from-row">
+                    <input name="linCodigo" id="linCodigo" type="hidden" value="@obj.linCodigo" />
+                    <input name="linDescripcion" id="linDescripcion" type="hidden" value="@obj.linDescripcion" />
+                    <input type="submit" value="@obj.linDescripcion" class="btn btn-lateral" />
+                </div>
+            </div>
+        </form>
+    }
+
+
+</div>
+
+<div class="modal-footer">
+
+</div>
+
+

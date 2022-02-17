@@ -1,0 +1,325 @@
+﻿@model INTI_PP.Models.clsActivo
+@using Microsoft.AspNetCore.Http
+@using System.Globalization
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<nav class="container-fluid bg-cabecera sticky-top navbar-dark" id="header">
+    <div class="row navbar navbar-expand-lg" id="header">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+            </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+
+                @foreach (var obj in Model.ListListadoLink)
+
+                {
+
+                    if (obj.likAlias == "Pagina")
+                    {
+                        if (obj.subMenu.Count > 0)
+                        {
+
+                            <li class="dropdown">
+
+
+                                @if (obj.likCabecera == "Correspondencia")
+                                {
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown"><img src="~/Imagenes/correspondencia.png" style="width:25px; height:23px;" /></a>
+                                }
+                                else
+                                {
+                                    @if (obj.likCabecera == "Geolocalizacion")
+                                    {
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"><img src="~/Imagenes/gps.png" style="width:25px; height:23px;" /></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">@obj.likCabecera</a>
+                                    }
+
+
+                                }
+
+
+                                <ul class="dropdown-menu">
+                                    @foreach (var objsubmenu in obj.subMenu)
+                                    {
+                                        if (objsubmenu.likAlias == "Pagina")
+                                        {
+                                            <li class="dropdown-item">
+                                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="@objsubmenu.likDireccion">@objsubmenu.likNombre</a>
+
+                                            </li>
+                                        }
+
+
+                                    }
+                                </ul>
+                            </li>
+
+                        }
+                        else
+                        {
+                            if (obj.likCabecera == "Correspondencia")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="@obj.likDireccion"> <img src="~/Imagenes/correspondencia.png" class="img-carrito" /></a>
+                                </li>
+                            }
+
+
+                            else
+                            {
+                                @if (obj.likCabecera == "Geolocalizacion")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="@obj.likDireccion"> <img src="~/Imagenes/gps.png" class="img-carrito" /></a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="@obj.likDireccion">@obj.likCabecera</a>
+                                    </li>
+                                }
+
+                            }
+
+                        }
+
+
+
+                    }
+
+                    if (obj.likAlias == "Modal")
+                    {
+
+                        if (obj.subMenu.Count > 0)
+                        {
+                            <li class="dropdown">
+                                @if (obj.likCabecera == "Geolocalizacion")
+                                {
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown"><img src="~/Imagenes/gps.png" style="width:25px; height:25px;" /></a>
+
+                                }
+
+                                else
+                                {
+                                    @if (obj.likCabecera == "Correspondencia")
+                                    {
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown"><img src="~/Imagenes/correspondencia.png" style="width:25px; height:25px;" /></a>
+
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">@obj.likCabecera</a>
+                                    }
+                                }
+
+
+                                <ul class="dropdown-menu">
+                                    @foreach (var objsubmenu in obj.subMenu)
+                                    {
+                                        if (objsubmenu.likAlias == "Pagina")
+                                        {
+                                            <li class="dropdown-item">
+                                                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="@objsubmenu.likDireccion">@objsubmenu.likNombre</a>
+
+                                            </li>
+                                        }
+                                        if (objsubmenu.likAlias == "Modal")
+                                        {
+                                            <li class="dropdown-item">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="@obj.likDireccion">@objsubmenu.likNombre</a>
+
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="modal" data-target="@obj.likDireccion">@obj.likCabecera</a>
+                            </li>
+                        }
+
+                    }
+
+                }
+
+
+
+            </ul>
+
+        </div>
+
+        <h6 class="mt-2 ml-3 texto1">@HttpContextAccessor.HttpContext.Session.GetString("SessionRazonSocial")</h6>
+
+
+
+
+    </div>
+    <div class="row navbar navbar-expand-lg">
+
+        <img src="~/Imagenes/COnSalud.png" class="img-hederLogo ml-2" />
+
+        <form class="form-search form-inline mr-auto ml-auto mt-sm-1" asp-controller="Home" asp-action="Buscar" method="POST">
+
+            <input name="txtProducto" id="txtProducto" type="text" placeholder="Buscar" aria-label="Buscar" class="texto5 search-query" autocomplete="on" required>
+            <button class="icon mr-auto"><i class="fa fa-search"></i></button>
+
+        </form>
+
+
+        <div>
+            <h6 class="textoSaldo mr-2 mt-sm-1"> Saldo: Bs. @HttpContextAccessor.HttpContext.Session.GetString("SessionSaldoCompras").Replace(".", ",") </h6>
+            <form class="form-inline pl-lg-1 ml-sm-0">
+
+                <a asp-area="" asp-controller="Home" asp-action="Carrito">
+                    <img src="~/Imagenes/Shopping00.png" class="img-carrito" />
+                    <span id="cart_menu_num" data-action="cart-can" class="badge rounded-circle">@HttpContextAccessor.HttpContext.Session.GetString("SessionCarrito") </span>
+                </a>
+                <a data-toggle="modal" data-target="#modalCerrarSesion">
+                    <img src="~/Imagenes/cerrarSecson.png" style="margin-left: 15px; margin-right: 0px; width: 27px; height: 27px;" data-toggle="tooltip" data-placement="bottom" title="Cerar Sesión" />
+
+                </a>
+
+
+            </form>
+        </div>
+    </div>
+
+
+
+</nav>
+
+
+<form class="mt-4" asp-area="" asp-controller="Home" asp-action="Activo" method="post">
+    <div class="row ml-1">
+
+        <div class="form-group col-lg-1">
+
+        </div>
+        <div class="form-group col-lg-4 col-sm-12 col-md-1">
+            <label>Codigo:</label>
+            <input type="text" class="fecha" name="codigoBusquedaActivo" id="codigoBusquedaActivo" value="" style="width: 230px; height: 35px;  border: 2px solid #39a590;">
+        </div>
+
+        <div class="form-group col-lg-4 col-sm-12 col-md-2">
+            <label>Detalle:</label>
+            <input type="text" name="detalleBusquedaActivo" id="detalleBusquedaActivo" value=" " style="width: 230px; height: 35px;  border: 2px solid #39a590;">
+        </div>
+        <div class="form-group col-lg-2 text-left">
+            <input class="btn btn-primary text-center" type="submit" value="BUSCAR" style="width:120px; height:36px; margin-top:-3px;" />
+        </div>
+
+    </div>
+
+</form>
+
+<div class="text-center mt-4 mb-1">
+
+    <h4><strong class="texto1-link">LISTA DE ACTIVOS</strong></h4>
+
+</div>
+
+<div class="modal-content align-items-center mx-3" style="width:auto; height:auto; align-items:center;">
+
+    <table class="table table-responsive-sm table-striped table-hover align-items-center bg-tabla" id="tblBuscadorActivo">
+        <thead class="bg-tablacabecera">
+            <tr class="texto1-link">
+
+                <th class="text-left" scope="col">Código</th>
+
+                <th class="text-right" scope="col">Detalle</th>
+
+                <th class="text-right" scope="col">Fecha Recepción</th>
+
+                <th class="text-right" scope="col">Rastreo</th>
+                <th class="text-right" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.ListListadoActivoBuscador.Count() > 0)
+            {
+                @for (int i = 0; i < Model.ListListadoActivoBuscador.Count; i = i + 1)
+                {
+                    <tr data-toggle="collapse">
+                        <td class="text-left">@Model.ListListadoActivoBuscador.ElementAt(i).actCodigo</td>
+                        <td class="text-right">@Model.ListListadoActivoBuscador.ElementAt(i).actDenominacion</td>
+                        <td class="text-right">@Model.ListListadoActivoBuscador.ElementAt(i).acuFecha.ToString().Split(" ")[0]</td>
+                        <td class="text-center"><a href="#" data-target="#modalRastreoActivo" data-toggle="modal" data-id="@Model.ListListadoActivoBuscador.ElementAt(i).actCodigo"><img src="~/Imagenes/rastreo.png" class="img-modifEdi" /></a></td>
+                        <td class="text-center"><a href="#" data-target="#modalEliminarCorr" data-toggle="modal" data-id="@Model.ListListadoActivoBuscador.ElementAt(i).actCodigo"><img src="~/Imagenes/eliminarCorr.png" class="img-modifEdi" /></a></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                @for (int i = 0; i < Model.ListListadoActivoUbicacion.Count; i = i + 1)
+                {
+                    <tr data-toggle="collapse">
+                        <td class="text-left">@Model.ListListadoActivoUbicacion.ElementAt(i).actCodigo</td>
+                        <td class="text-right">@Model.ListListadoActivoUbicacion.ElementAt(i).actDenominacion</td>
+                        <td class="text-right">@Model.ListListadoActivoUbicacion.ElementAt(i).acuFecha.ToString().Split(" ")[0]</td>
+                        <td class="align-middle"><a href="#" data-target="#modalRastreoActivo" data-toggle="modal" data-id="@Model.ListListadoActivoUbicacion.ElementAt(i).actCodigo"><img src="~/Imagenes/rastreo.png" class="img-modifEdi" /></a></td>
+                        <td class="align-middle"><a href="#" data-target="#modalEliminarCorr" data-toggle="modal" data-id="@Model.ListListadoActivoUbicacion.ElementAt(i).actCodigo"><img src="~/Imagenes/eliminarCorr.png" class="img-modifEdi" /></a></td>
+                    </tr>
+                }
+            }
+
+
+
+        </tbody>
+        <!--
+        <tbody>
+            {string h = "";
+
+                string hid = "";
+
+
+            }
+            for (int i = 0; i < Model.ListListadoActivoUbicacion.Count; i = i + 1)
+            {
+                h = "#Detalle" + i.ToString();
+                hid = "Detalle" + i.ToString();
+
+
+
+                <tr data-toggle="collapse" data-target=h class="clickable">
+
+                    <td class="text-left">Model.ListListadoActivoUbicacion.ElementAt(i).actCodigo</td>
+                    <td class="text-right">Model.ListListadoActivoUbicacion.ElementAt(i).actDenominacion</td>
+
+                    <td class="text-right">Model.ListListadoActivoUbicacion.ElementAt(i).acuFecha</td>
+
+                    <td class="align-middle"><a href="#" data-target="#modalRastreoCorrespondencia" data-toggle="modal" data-id="Model.ListListadoActivoUbicacion.ElementAt(i).actCodigo"><img src="~/Imagenes/rastreo.png" class="img-modifEdi" /></a></td>
+                    <td class="align-middle"><a href="#" data-target="#modalEliminarCorr" data-toggle="modal" data-id="Model.ListListadoActivoUbicacion.ElementAt(i).actCodigo"><img src="~/Imagenes/eliminarCorr.png" class="img-modifEdi" /></a></td>
+
+
+                </tr>
+
+            }
+
+        </tbody>
+            -->
+    </table>
+
+</div>
+<!--  MODAL RASTREO ACTIVO-->
+
+<div class="modal fade" id="modalRastreoActivo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable justify-content-center" role="document">
+        <div class="modal-content justify-content-center" style="width:900px; height:800px;">
+            @await Component.InvokeAsync("RastreoActivo")
+        </div>
+    </div>
+</div>
+
+<!--  FIN MODAL RASTREO ACTIVO--->

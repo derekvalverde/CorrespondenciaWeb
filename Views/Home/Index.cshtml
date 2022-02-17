@@ -1,0 +1,62 @@
+﻿@model INTI_PP.Models.clsLoginRequest
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!--//Login-->
+<div class="limiter">
+    <div class="containerr100-login100">
+        <div class="wrap-login100 mt-0">
+            <form class="login100-form validate-form" asp-controller="Home" asp-action="Pedidos" method="post">
+                <div class="pb-4 pt-4 text-center">
+                    <img src="~/Imagenes/letranegra.png" class="img-login" />
+                </div>
+
+                @if (HttpContextAccessor.HttpContext.Session.GetString("SessionErrorIngreso") != null)
+                {<div class="text-center">
+                        <h6 class="texto4"> @HttpContextAccessor.HttpContext.Session.GetString("SessionErrorIngreso")</h6>
+                    </div>
+                }
+
+
+                <div class="wrap-input100 validate-input mt-2" data-validate="Valid email is required: ex@abc.xyz">
+                    <input asp-for="Usuario" class="input100" type="text">
+                    <span class="focus-input100"></span>
+                    <span class="label-input100">Usuario</span>
+                </div>
+
+
+                <div class="wrap-input100 validate-input mt-1" data-validate="Password is required">
+                    <input class="input100" type="password" asp-for="Contra">
+
+                    <span class="focus-input100"></span>
+                    <span class="label-input100">Contraseña</span>
+                </div>
+
+
+                <div class="g-recaptcha mt-4 mb-4" style="display: inline-block; margin-left: 80px;" data-sitekey="6LdJRdkZAAAAALt5J4YJRl6VADPOm9E9eDyswXzN">
+                </div>
+
+
+
+                <div class="containerr100-login100-form-btn mt-2">
+                    <button class="login100-form-btn" type="submit">
+                        <h6>Ingresar</h6>
+                    </button>
+                </div>
+
+
+            </form>
+
+            <div class="login100-more" style="background-image: url('@Url.Content("~/Imagenes/900x800px-NeuroVimin.jpg")');">
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+

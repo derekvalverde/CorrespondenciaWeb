@@ -1,0 +1,28 @@
+﻿<div class="m-1">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <div class="my-3 text-center">
+        <img src="~/Imagenes/checkbien.png" style="width: 50px; height:50px;" />
+    </div>
+
+
+    <div class="custom-control custom-checkbox my-3 mx-2">
+        <h6>
+            DECLARACION JURADA:<br />
+            Todos los datos consignados por mi persona se constituyen en una declaración jurada, que de verificarse ser inexactos u omitirse información solicitada se estará incurriendo en el delito de falsedad material e ideológica, tal como lo prevén los artículos 198, 199 del Código Penal.
+            <br />
+        </h6>
+        <input type="checkbox" id="AceptaDatosM" name="AceptaDatosM" />&nbsp;&nbsp;Acepto.
+
+    </div>
+
+
+    <form asp-controller="Home" asp-action="confirmarModi" method="post" class="text-center" onsubmit="document.getElementById('BtnConfirmar').disabled=true;">
+
+        <button class="btn btn-primary text-center mt-2" type="submit" id="BtnConfirmarModi" name="BtnConfirmarModi" disabled><strong class="text-center">ENVIAR</strong></button>
+
+    </form>
+
+</div>

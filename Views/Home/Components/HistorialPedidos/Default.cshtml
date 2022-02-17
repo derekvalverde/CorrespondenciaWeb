@@ -1,0 +1,85 @@
+﻿@model List<clsPedidoSolicitudResponse>
+    <div class="modal-header">
+        <h4 class="modal-title texto2 text-center mx-5" id="exampleModalScrollableTitle">Pedidos</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body mx-5 my-3">
+
+        <table class="table table-striped table-hover bg-tabla">
+            <thead class="bg-tablacabecera">
+                <tr class="texto1-link">
+                    
+                    <th class="text-left" scope="col">Pedido por:</th>
+                    <th class="text-right" scope="col">Monto</th>
+                   
+                    <th class="text-right" scope="col">Fecha</th>
+                
+                    <th class="text-left" scope="col">Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{string h = "";
+
+                    string hid = "";
+                    
+
+                }
+                @for (int i = 0; i < Model.Count; i = i + 1)
+                {
+                    h = "#Detalle" + i.ToString();
+                    hid = "Detalle" + i.ToString();
+
+
+
+                <tr data-toggle="collapse" data-target=@h class="clickable">
+
+                    <td class="text-left">@Model.ElementAt(i).cliCodigo</td>
+                    <td class="text-right">@Model.ElementAt(i).pedPrecio</td>
+                    
+                    <td class="text-right">@Model.ElementAt(i).pedFechaEntrega.ToString("dd/MM/yyyy")</td>
+                   
+                    <td class="text-left texto1-link "> <i><u>Detalle</u></i></td>
+                </tr>
+
+                    <tr class="texto3">
+                        <td colspan="6">
+                            <div id=@hid class="collapse">
+                                <table class="table table-striped table-hover">
+                                    <thead class="bg-tablaDetalle">
+                                        <tr class="texto3">
+                                            
+                                            <th class="text-left">Nombre Del Producto</th>
+                                            <th class="text-right">Cantidad Pedido</th>
+                                            <th class="text-right">Cantidad Atendida</th>
+
+                                        </tr>
+                                        @for (int j = 0; j < Model.ElementAt(i).detalleSolicitudCliente.Count; j = j + 1)
+                                        {
+
+                                            <tr>
+                                                
+                                                <td class="text-left">@Model.ElementAt(i).detalleSolicitudCliente.ElementAt(j).matCodigo</td>
+                                                <td class="text-right">@Model.ElementAt(i).detalleSolicitudCliente.ElementAt(j).pddCantidad</td>
+                                                <td class="text-right">@Model.ElementAt(i).detalleSolicitudCliente.ElementAt(j).pddCantidadAtendida</td>
+                                            </tr>
+                                        }
+                                    </thead>
+                                </table>
+                            </div>
+                        </td>
+                        
+                    </tr>
+
+
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+    <div class="modal-footer">
+        <!--button type="button" class="btn btn-primary" data-dismiss="modal">Close</!--button-->
+
+    </div>

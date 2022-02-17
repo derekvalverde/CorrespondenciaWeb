@@ -1,0 +1,73 @@
+﻿@model clsCorrespondenciaDivisionD
+<div class="modal-header text-right">
+    <h4 class="modal-title texto2 text-center mx-5" id="exampleModalScrollableTitle">REGISTRAR DIVISION CORRESPONDENCIA</h4>
+    <button type="button" class="close text-right" style="background-color:#48cfb4; color:white; width:60px; height:60px; border:3px solid #48cfb4; border-color: #48cfb4;" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body justify-content-center" style=" margin-left: 10px; margin-right: 20px; ">
+
+    <table class="table table-responsive-sm table-hover align-items-center my-3" id="tblDivisionCorrespondenciaD">
+        <thead class="bg-tablacabecera">
+            <tr class="texto1-link">
+
+                <td class="bold">Codigo</td>
+                <td class="bold">Numero de Guia</td>
+                <td class="bold">Descripcion</td>
+                <td class="bold">Remitente</td>
+                <td class="bold">Area Destino</td>
+                <td class="bold">N° Division</td>
+                <td class="bold">Fecha</td>
+            </tr>
+
+    </table>
+
+</div>
+<div class="modal-body justify-content-center" style=" margin-left: 10px; margin-right: 20px; ">
+    <form class="justify-content-center" asp-controller="Home" asp-action="registrarCorresDivisionD" method="post">
+        <div class="form-row">
+            <input type="hidden" class="form-control" id="inputCorIdOcultoD" name="inputCorIdOcultoD" value="">
+
+            <div class="form-group col-md-6">
+                <label for="inputNombre">Codigo: </label>
+                <input type="text" class="form-control" id="inputCorIdD" name="inputCorIdD" value="" required>
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <label for="inputNombre">Destino Final:</label>
+                <select id="inputusuFinalIdD" name="inputusuFinalIdD" class="form-control" value="" required>
+                   
+                    @foreach (var obj in Model.ListListadoDestinatarioListar)
+                    {
+                        <option value="@obj.usuId">@obj.usuNombre</option>
+                    }
+
+                </select>
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputNombre">Detalles: </label>
+                <input type="text" class="form-control" id="inputCdeDetalleD" name="inputCdeDetalleD" value="" required>
+            </div>
+
+            <div class="form-row my-auto col-md-6 justify-content-center mt-1">
+                <input type="checkbox" class="form-control mr-3" id="inputCdeUrgenteD" name="inputCdeUrgenteD" style="width:21px; height:21px;">
+                Recojo Urgente
+            </div>
+
+        </div>
+        <div class="modal-footer justify-content-center">
+            <div class="justify-content-center mr-5">
+                <a href="#" class="btn btn-primary ml-2" id="btnLimpiarRegistrarDivisionCorresD" name="btnLimpiarRegistrarDivisionCorresD">Limpiar</a>
+
+            </div>
+            <div class="justify-content-center">
+                <button type="submit" id="btnRegistrarCorresDivisionD" class="btn btn-primary">Registar</button>
+            </div>
+        </div>
+    </form>
+
+</div>
